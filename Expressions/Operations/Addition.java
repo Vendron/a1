@@ -5,8 +5,7 @@ import Expressions.Variable;
 
 //addtion of left and right expressions
 public class Addition extends ArithmeticExpression {
-    private final ArithmeticExpression left;
-    private final ArithmeticExpression right;
+    private final ArithmeticExpression left, right;
 
     public Addition(ArithmeticExpression left, ArithmeticExpression right) {
         this.left = left;
