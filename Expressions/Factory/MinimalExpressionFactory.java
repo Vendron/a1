@@ -20,7 +20,12 @@ public class MinimalExpressionFactory implements ExpressionFactory {
             return createExpression(expression.substring(1, expression.length() - 1));
         }
 
-        // Handle Brackets
+        /*
+         * Handle Brackets
+         * We will replace the brackets with the expression inside them, and then
+         * recursively call createExpression() on the new expression
+         * @example: 9+((24/4)*15) -> 9+((6)*15) -> 9+((90)) -> 9+(90) -> 9+90
+         */
         int openPos = expression.indexOf('(');
         while (openPos != -1) {
             int pos = findMatchingBracket(expression, openPos); // pos is for closing bracket
@@ -30,8 +35,7 @@ public class MinimalExpressionFactory implements ExpressionFactory {
             String inside = expression.substring(openPos + 1, pos);
 
             // Debugging logs
-            System.out.println("Opening bracket at: " + openPos);
-            System.out.println("Matching closing bracket at: " + pos);
+            System.out.println("Opening bracket at: " + openPos + ", closing bracket at: " + pos);
             System.out.println("Expression inside brackets: " + inside);
 
             ArithmeticExpression insideExpr = createExpression(inside);
@@ -39,15 +43,29 @@ public class MinimalExpressionFactory implements ExpressionFactory {
                 expression = expression.substring(0, openPos) + insideExpr.toString() + expression.substring(pos + 1);
             } else {
                 String result = insideExpr.toString();
-            expression = expression.substring(0, openPos) + result + expression.substring(pos + 1);
-
+                expression = expression.substring(0, openPos) + result + expression.substring(pos + 1);
             }
-            
 
             // Debugging log for the new expression after replacement
             System.out.println("Expression after bracket replacement: " + expression);
 
             openPos = expression.indexOf('('); // Find the next opening bracket for the next iteration
+        }
+
+        // Handle Addition
+        openPos = expression.indexOf("+");
+        if (openPos != -1) {
+            return new Addition(
+                    createExpression(expression.substring(0, openPos)),
+                    createExpression(expression.substring(openPos + 1)));
+        }
+
+        // Handle Subtraction (need to ensure it's not a negative number)
+        openPos = expression.lastIndexOf("-");
+        if (openPos > 0) {
+            return new Subtraction(
+                    createExpression(expression.substring(0, openPos)),
+                    createExpression("-" + expression.substring(openPos + 1)));
         }
 
         // Handle Exponentiation
@@ -65,29 +83,13 @@ public class MinimalExpressionFactory implements ExpressionFactory {
                     createExpression(expression.substring(0, openPos)),
                     createExpression(expression.substring(openPos + 1)));
         }
-
+        
         // Handle Division
         openPos = expression.indexOf("/");
         if (openPos != -1) {
             return new Division(
                     createExpression(expression.substring(0, openPos)),
                     createExpression(expression.substring(openPos + 1)));
-        }
-
-        // Handle Addition
-        openPos = expression.indexOf("+");
-        if (openPos != -1) {
-            return new Addition(
-                    createExpression(expression.substring(0, openPos)),
-                    createExpression(expression.substring(openPos + 1)));
-        }
-
-        // Handle Subtraction (need to ensure it's not a negative number)
-        openPos = expression.lastIndexOf("-");
-        if (openPos > 0) {
-            return new Subtraction(
-                    createExpression(expression.substring(0, openPos)),
-                    createExpression("-" + expression.substring(openPos + 1)));
         }
 
         // Check if it's a variable or a coefficient followed by a variable
@@ -113,6 +115,12 @@ public class MinimalExpressionFactory implements ExpressionFactory {
 
     }
 
+    /*
+     * Finds the matching closing bracket for the opening bracket at startPos
+     * @param expression The expression to search in
+     * @param startPos The position of the opening bracket
+     * @return The position of the matching closing bracket, or -1 if not found
+     */
     private int findMatchingBracket(String expression, int startPos) {
         int depth = 0;
         for (int i = startPos; i < expression.length(); i++) {
@@ -125,6 +133,6 @@ public class MinimalExpressionFactory implements ExpressionFactory {
                 }
             }
         }
-        return -1; // No matching bracket found
+        return -1;
     }
 }

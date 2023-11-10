@@ -2,6 +2,7 @@ package Expressions.Operations;
 
 import Expressions.ArithmeticExpression;
 import Expressions.Variable;
+import java.util.HashMap;
 
 //addtion of left and right expressions
 public class Addition extends ArithmeticExpression {
@@ -10,6 +11,33 @@ public class Addition extends ArithmeticExpression {
     public Addition(ArithmeticExpression left, ArithmeticExpression right) {
         this.left = left;
         this.right = right;
+    }
+
+    /*
+     * @ return the variable information
+     */
+    public HashMap<String, Double> getVariableInformation() {
+        //Initialize the hashmap
+        HashMap<String, Double> variableInformation = new HashMap<>();
+
+        // Get the variable information from the left and right expressions
+        HashMap<String, Double> leftInfo = this.left.getVariableInformation();
+        HashMap<String, Double> rightInfo = this.right.getVariableInformation();
+
+        // Merge the two hashmaps, adding the values of the same keys
+        //Left info
+        for (String varName : leftInfo.keySet()) {
+            variableInformation.put(varName, leftInfo.get(varName));
+        }
+        //Right info
+        for (String varName : rightInfo.keySet()) {
+            if (variableInformation.containsKey(varName)) {
+                variableInformation.put(varName, variableInformation.get(varName) + rightInfo.get(varName));
+            } else {
+                variableInformation.put(varName, rightInfo.get(varName));
+            }
+        }
+        return variableInformation;
     }
 
     @Override
@@ -21,7 +49,8 @@ public class Addition extends ArithmeticExpression {
                 throw new IllegalArgumentException("Cannot add variables with different names: " + leftVar.getVarName()
                         + " and " + rightVar.getVarName());
             }
-            return leftVar.getCoefficient() + rightVar.getCoefficient();        }
+            return leftVar.getCoefficient() + rightVar.getCoefficient();
+        }
         return left.evaluate() + right.evaluate();
     }
 
