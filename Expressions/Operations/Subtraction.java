@@ -14,11 +14,11 @@ public class Subtraction extends ArithmeticExpression {
         this.right = right;
     }
 
-    public HashMap<String, Double> getVariableInformation() {
+    public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
 
-        HashMap<String, Double> leftInfo = this.left.getVariableInformation();
-        HashMap<String, Double> rightInfo = this.right.getVariableInformation();
+        HashMap<String, Double> leftInfo = this.left.simplify();
+        HashMap<String, Double> rightInfo = this.right.simplify();
 
         for (String varName : leftInfo.keySet()) {
             variableInformation.put(varName, leftInfo.get(varName));

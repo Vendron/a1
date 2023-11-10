@@ -14,15 +14,15 @@ public class Addition extends ArithmeticExpression {
     }
 
     /*
-     * @ return the variable information
+     * @return: a hashmap of the variable information
      */
-    public HashMap<String, Double> getVariableInformation() {
+    public HashMap<String, Double> simplify() {
         //Initialize the hashmap
         HashMap<String, Double> variableInformation = new HashMap<>();
 
         // Get the variable information from the left and right expressions
-        HashMap<String, Double> leftInfo = this.left.getVariableInformation();
-        HashMap<String, Double> rightInfo = this.right.getVariableInformation();
+        HashMap<String, Double> leftInfo = this.left.simplify();
+        HashMap<String, Double> rightInfo = this.right.simplify();
 
         // Merge the two hashmaps, adding the values of the same keys
         //Left info

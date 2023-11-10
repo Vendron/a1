@@ -10,31 +10,49 @@ public class Multiplication extends ArithmeticExpression {
         this.left = left;
         this.right = right;
     }
-    
-    // This won't work if you have something like (x + 1) * (x + 2)
+
     /*
      * This method is used to get the variable information in a HashMap
      */
-    public HashMap<String, Double> getVariableInformation() {
+    public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
 
-        HashMap<String, Double> leftInfo = this.left.getVariableInformation();
-        HashMap<String, Double> rightInfo = this.right.getVariableInformation();
+        HashMap<String, Double> leftInfo = this.left.simplify();
+        HashMap<String, Double> rightInfo = this.right.simplify();
 
+        Double constant = leftInfo.containsKey("constant") && rightInfo.containsKey("constant") ? leftInfo.get("constant") * rightInfo.get("constant") : 0.0;
+        variableInformation.put("constant", constant);
+
+        // Merge the constant values of the left and right expressions
         for (String varName : leftInfo.keySet()) {
-            double leftCoefficient = leftInfo.get(varName);
-            for (String otherVarName : rightInfo.keySet()) {
-                double rightCoefficient = rightInfo.get(otherVarName);
-    
-                // Combine variable names
-                String combinedVarName = varName + otherVarName; // This won't work if you have something like (x + 1) * (x + 2)
-                double combinedCoefficient = leftCoefficient * rightCoefficient;
-    
-                // Update the map with the new combined variable and coefficient
-                variableInformation.merge(combinedVarName, combinedCoefficient, Double::sum);
+            if (varName.equals("constant")) {
+                continue;
             }
+            variableInformation.put(varName, leftInfo.get(varName) * rightInfo.get("constant"));
         }
 
+        for (String varName : rightInfo.keySet()) {
+            if (varName.equals("constant")) {
+                continue;
+            }
+            variableInformation.put(varName, rightInfo.get(varName) * leftInfo.get("constant"));
+        }
+
+        for (String varName : leftInfo.keySet()) {
+            if (varName.equals("constant")) {
+                continue;
+            }
+            for (String otherVarName : rightInfo.keySet()) {
+                if (otherVarName.equals("constant")) {
+                    continue;
+                }
+                // Combine variable names
+                String combinedVarName = varName + otherVarName; // This won't work if you have something like (x + 1) *  (x + 2)
+                double combinedCoefficient = leftInfo.get(varName) * rightInfo.get(otherVarName);
+
+                variableInformation.put(combinedVarName, combinedCoefficient);
+            }
+        }
         return variableInformation;
     }
 
@@ -51,3 +69,8 @@ public class Multiplication extends ArithmeticExpression {
     }
 
 }
+// (az + y^2 + 1) * (x + 2)
+// (az + y^2 + 1)(x + 2)
+// azx + y^2x + x
+// 2az + 2y^2 + 2
+// azx + y^2x + x + 2az + 2y^2 + 2
