@@ -1,20 +1,37 @@
 package Expressions;
 
-public class Constant extends ArithmeticExpression {
-    private final double value;
+import java.util.HashMap;
 
-    public Constant(double value) {
+public class Constant extends ArithmeticExpression {
+    private final Double value;
+
+    public Constant(Double value) {
         this.value = value;
     }
 
     @Override
     public double evaluate() {
-        return value;
+        return Double.valueOf(this.value);
+    }
+
+    public StringBuilder toStringBuilder() {
+        return new StringBuilder(Double.toString(this.value));
     }
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return this.toStringBuilder().toString();
+    }
+
+    // Simplify constant expression by returning the value in hashmap
+    public HashMap<String, Double> simplify() {
+        return new HashMap<String, Double>(
+            new HashMap<String, Double>() {
+                {
+                    put("constant", value);
+                }
+            }
+        );
     }
 
 }
