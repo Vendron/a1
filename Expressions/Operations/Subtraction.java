@@ -14,6 +14,10 @@ public class Subtraction extends ArithmeticExpression {
         this.right = right;
     }
 
+    /**
+     * Simplify subtraction expression by subtracting the left and right expressions in hashmap
+     * @return Variable information in a HashMap
+     */
     public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
 
@@ -34,6 +38,9 @@ public class Subtraction extends ArithmeticExpression {
         return variableInformation;
     }
 
+    /**
+     * @return The value of the expression
+     */
     @Override
     public double evaluate() {
         if (left instanceof Variable && right instanceof Variable) {
@@ -48,6 +55,9 @@ public class Subtraction extends ArithmeticExpression {
         return left.evaluate() - right.evaluate();
     }
 
+    /**
+     * @return The string representation of the expression
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

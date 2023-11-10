@@ -25,6 +25,10 @@ public class Division extends ArithmeticExpression {
         return sb.toString();
     }
 
+    /**
+     * Simplify division expression by dividing the left and right expressions in hashmap
+     * @return The variable information in a HashMap
+     */
     public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
 

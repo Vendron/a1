@@ -1,10 +1,15 @@
 import Expressions.ArithmeticExpression;
 import Expressions.Factory.MinimalExpressionFactory;
 
+/**
+ * Main class to test the expression factory
+ */
 public class Main {
     public static void main(String[] args) {
+        // Create the factory
         MinimalExpressionFactory factory = new MinimalExpressionFactory();
-        ArithmeticExpression expression = factory.createExpressionFromString("(4x*3)-((24/4)*15)");
+        // Create an expression
+        ArithmeticExpression expression = factory.createExpressionFromString("(1x+2y)*3");
         System.out.println(expression.evaluate());
         System.out.println(factory.simplify(expression));
     }

@@ -11,8 +11,9 @@ public class Multiplication extends ArithmeticExpression {
         this.right = right;
     }
 
-    /*
+    /**
      * This method is used to get the variable information in a HashMap
+     * @return The variable information in a HashMap
      */
     public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
@@ -20,7 +21,9 @@ public class Multiplication extends ArithmeticExpression {
         HashMap<String, Double> leftInfo = this.left.simplify();
         HashMap<String, Double> rightInfo = this.right.simplify();
 
-        Double constant = leftInfo.containsKey("constant") && rightInfo.containsKey("constant") ? leftInfo.get("constant") * rightInfo.get("constant") : 0.0;
+        Double constant = leftInfo.containsKey("constant") && rightInfo.containsKey("constant")
+                ? leftInfo.get("constant") * rightInfo.get("constant")
+                : 0.0;
         variableInformation.put("constant", constant);
 
         // Merge the constant values of the left and right expressions
@@ -47,7 +50,7 @@ public class Multiplication extends ArithmeticExpression {
                     continue;
                 }
                 // Combine variable names
-                String combinedVarName = varName + otherVarName; // This won't work if you have something like (x + 1) *  (x + 2)
+                String combinedVarName = varName + otherVarName;
                 double combinedCoefficient = leftInfo.get(varName) * rightInfo.get(otherVarName);
 
                 variableInformation.put(combinedVarName, combinedCoefficient);
@@ -56,11 +59,19 @@ public class Multiplication extends ArithmeticExpression {
         return variableInformation;
     }
 
+    /**
+     * This method is used to evaluate the expression
+     * @return The value of the expression
+     */
     @Override
     public double evaluate() {
         return left.evaluate() * right.evaluate();
     }
 
+    /**
+     * This method is used to convert the expression to a string
+     * @return The string representation of the expression
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -69,8 +80,3 @@ public class Multiplication extends ArithmeticExpression {
     }
 
 }
-// (az + y^2 + 1) * (x + 2)
-// (az + y^2 + 1)(x + 2)
-// azx + y^2x + x
-// 2az + 2y^2 + 2
-// azx + y^2x + x + 2az + 2y^2 + 2

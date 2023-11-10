@@ -13,7 +13,8 @@ public class Addition extends ArithmeticExpression {
         this.right = right;
     }
 
-    /*
+    /**
+     * Simplify addition expression by adding the left and right expressions in hashmap
      * @return: a hashmap of the variable information
      */
     public HashMap<String, Double> simplify() {
@@ -40,6 +41,10 @@ public class Addition extends ArithmeticExpression {
         return variableInformation;
     }
 
+    /**
+     * @brief: evaluate the expression
+     * @return The value of the expression
+     */
     @Override
     public double evaluate() {
         if (left instanceof Variable && right instanceof Variable) {

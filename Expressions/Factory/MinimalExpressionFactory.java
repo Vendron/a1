@@ -20,14 +20,15 @@ public class MinimalExpressionFactory extends AbstractFactory {
         expression = expression.replaceAll("\\s", ""); // Remove any spaces
         System.out.println("Current Expression: " + expression); // Debugging line
 
+        /**
+         * Handle Brackets
+         */
         if (expression.charAt(0) == '(' && findMatchingBracket(expression, 0) == expression.length() - 1) {
             return createExpressionFromString(expression.substring(1, expression.length() - 1));
         }
 
-        /*
-         * Handle Brackets
-         * We will replace the brackets with the expression inside them, and then
-         * recursively call createExpressionFromString() on the new expression
+        /**
+         * Replace brackets with the expression inside them, and then recursively call createExpressionFromString() on the new expression
          * @example: 9+((24/4)*15) -> 9+((6)*15) -> 9+((90)) -> 9+(90) -> 9+90
          */
         int openPos = expression.indexOf('(');
@@ -119,7 +120,7 @@ public class MinimalExpressionFactory extends AbstractFactory {
 
     }
 
-    /*
+    /**
      * Finds the matching closing bracket for the opening bracket at startPos
      * @param expression The expression to search in
      * @param startPos The position of the opening bracket
@@ -140,7 +141,7 @@ public class MinimalExpressionFactory extends AbstractFactory {
         return -1;
     }
 
-    /*
+    /**
      * This method is used to convert the hash map to a string
     */
     private String hashToString(){

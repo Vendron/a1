@@ -11,8 +11,10 @@ public class Exponentiation extends ArithmeticExpression {
         this.right = right;
     }
 
-    /*
-     * Cannot simplify a power expression
+    /**
+     * This method is used to get the variable information in a HashMap 
+     * Cannot simplify a power expression so we just return the expression itself
+     * @return The variable information in a HashMap
      */
     public HashMap<String, Double> simplify() {
         HashMap<String, Double> variableInformation = new HashMap<>();
@@ -34,11 +36,17 @@ public class Exponentiation extends ArithmeticExpression {
         return variableInformation;
     }
 
+    /**
+     * @return The value of the expression
+     */
     @Override
     public double evaluate() {
         return Math.pow(left.evaluate(), right.evaluate());
     }
 
+    /**
+     * @return The string representation of the expression
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

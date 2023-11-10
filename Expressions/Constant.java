@@ -23,6 +23,7 @@ public class Constant extends ArithmeticExpression {
         return this.toStringBuilder().toString();
     }
 
+    // Simplify constant expression by returning the value in hashmap
     public HashMap<String, Double> simplify() {
         return new HashMap<String, Double>(
             new HashMap<String, Double>() {

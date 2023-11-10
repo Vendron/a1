@@ -6,7 +6,7 @@ public class Variable extends ArithmeticExpression {
     private double coefficient;
     private String varName;
 
-    /*
+    /**
      * Creates a variable with a coefficient of 1
      * @param varName the name of the variable
      */
@@ -15,7 +15,7 @@ public class Variable extends ArithmeticExpression {
         this.varName = varName;
     }
 
-    /*
+    /**
      * evaluates the variable to its value
      */
     @Override
@@ -23,7 +23,7 @@ public class Variable extends ArithmeticExpression {
         return coefficient;
     }
 
-    /*
+    /**
      * Simplifies the variable
      * @return: the simplified variable
      */
@@ -31,7 +31,7 @@ public class Variable extends ArithmeticExpression {
         return varName;
     }
 
-    /*
+    /**
      * Returns the variable information of the variable
      */
     public Double getCoefficient() {
@@ -48,7 +48,7 @@ public class Variable extends ArithmeticExpression {
         return sb.toString();
     }
 
-    /*
+    /**
      * Sums the coefficients of the same variable
      * @param variableInformation the variable information to add to
      * @param varName the name of the variable
